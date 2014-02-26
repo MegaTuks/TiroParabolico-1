@@ -92,52 +92,13 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         caballo.sumaCuadro(caballo7, 75);
         caballo.sumaCuadro(caballo8, 75);
         
-        
-        lista = new LinkedList(); // se crea una nueva lista encadenada
-        
-        // Se genera un número random entre 1 y 3 para definir el númeor de malos
-        int randMal = (int)(Math.random() * 3 + 1);
-        
-        if (randMal == 1) {
-            numMalos = 12;
-        }
-        
-        else if (randMal == 2) {
-            numMalos = 14;
-        }
-        
-        else {
-            numMalos = 16;
-        }
-        
-        //Se añaden los objetos malos a la lista encadenada
-        for (int i = 0; i < numMalos; i++) {
-            //se crea un número random para la posición x del objeto malo
-            //dependiendo del número de objetos existentes
-            if (i < numMalos / 2) {
-                int rand = (int)(Math.random() * (getWidth() - 100));
-                //se crea un número random para la velocidad del objeto
-                int vel = (int)(Math.random() * 4 + 3);
-                //se crea un objeto malo
-                ave = new Malo(rand, -50, ave1, vel);
-            }
-            
-            else {
-                int rand = (int)(Math.random() * (getWidth() - 100));
-                //se crea un número random para la velocidad del objeto
-                int vel = (int)(Math.random() * 4 - 6);
-                //se crea un objeto malo
-                ave = new Malo(rand, getHeight() + 25, ave1, vel);
-            }
-            //se añaden los cuadros de animación
-            ave.sumaCuadro(ave1, 100);
-            ave.sumaCuadro(ave2, 100);
-            ave.sumaCuadro(ave3, 100);
-            ave.sumaCuadro(ave4, 100);
-            ave.sumaCuadro(ave5, 100);
-            ave.sumaCuadro(ave6, 100);
-            lista.add(ave);
-        }
+        ave = new Malo(0, 0, ave1, 3);
+        ave.sumaCuadro(ave1, 100);
+        ave.sumaCuadro(ave2, 100);
+        ave.sumaCuadro(ave3, 100);
+        ave.sumaCuadro(ave4, 100);
+        ave.sumaCuadro(ave5, 100);
+        ave.sumaCuadro(ave6, 100);
     }
 
     /** 
@@ -202,15 +163,11 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
          }
          
          //Actualiza la animación con base en el tiempo transcurrido para cada malo
-         for (int i = 0; i < lista.size(); i++) {
-             ((Malo)lista.get(i)).actualiza(tiempoTranscurrido);
-         }
+         ave.actualiza(tiempoTranscurrido);
          
          //Actualiza la posición de cada malo con base en su velocidad
-         for (int i = 0; i < lista.size(); i++) {
-             ((Malo)lista.get(i)).setPosY(((Malo)lista.get(i)).getPosY() + ((Malo)lista.get(i)).getVelocidad());
-         }
-         
+         ave.setPosY(ave.getPosY() + ave.getVelocidad());
+
          //verifica que no esté detenido por haber hecho click sobre el objeto
          if (!click) {
              //actualiza la posición dependiendo de la dirección
@@ -258,50 +215,20 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         }
         
         //Verifica que cada objeto malo no choque con el caballo
-        for (int i = 0; i < lista.size(); i++) {
-            //Verifica que el caballo intersecte al objeto malo
-            if (caballo.intersecta((Malo)lista.get(i))) {
-                tiempoChoque = System.currentTimeMillis(); //guarda el tiempo en que ocurrió el choque
-                desaparece = true;  //se activa el mensaje desaparece
-                bala.play();  //reproducre sonido de bala
-                ((Malo)lista.get(i)).setConteo(((Malo)lista.get(i)).getConteo() + 1);
-                if (i < lista.size() / 2) {
-                    // Reposiciona el asteroide en x random
-                    ((Malo)lista.get(i)).setPosX((int)(Math.random() * (getWidth() - ((Malo)lista.get(i)).getAncho())));
-                    ((Malo)lista.get(i)).setPosY(-50);
-                }
-                
-                else {
-                    // Reposiciona el asteroide en x random
-                    ((Malo)lista.get(i)).setPosX((int)(Math.random() * (getWidth() - ((Malo)lista.get(i)).getAncho())));
-                    ((Malo)lista.get(i)).setPosY(getHeight() + 25);
-                }
-            }
+        if (caballo.intersecta(ave)) {
+            tiempoChoque = System.currentTimeMillis(); //guarda el tiempo en que ocurrió el choque
+            desaparece = true;  //se activa el mensaje desaparece
+            bala.play();  //reproducre sonido de bala
+            ave.setConteo(ave.getConteo() + 1);
+            ave.setPosX((int)(Math.random() * (getWidth() - ave.getAncho())));
+            ave.setPosY(-50);
         }
         
         //Verifica que cada objeto malo choque con el applet
-        for (int i = 0; i < lista.size(); i++) {
-            
-            if (i < lista.size() / 2) {
-                //Verifica que el objeto malo choque con el fondo del applet
-                if (((Malo)lista.get(i)).getPosY() + ((Malo)lista.get(i)).getAlto() > getHeight()) {
-                    explosion.play();  //reproduce sonido de explosión
-                    // Reposiciona el asteroide en x random
-                    ((Malo)lista.get(i)).setPosX((int)(Math.random() * (getWidth() - 50)));
-                    ((Malo)lista.get(i)).setPosY(-50);
-                }
-            }
-            
-            else {
-                //Verifica que el objeto malo choque con el principio del applet
-                if (((Malo)lista.get(i)).getPosY() < 0) {
-                    explosion.play();  //reproduce sonido de explosión
-                    // Reposiciona el asteroide en x random
-                    ((Malo)lista.get(i)).setPosX((int)(Math.random() * (getWidth() - 50)));
-                    ((Malo)lista.get(i)).setPosY(getHeight() + 25);
-                }
-            }
-
+        if (ave.getPosY() + ave.getAlto() > getHeight()) {
+            explosion.play();
+            ave.setPosX((int)(Math.random() * (getWidth() - 50)));
+            ave.setPosY(-50);
         }
     }
     
@@ -443,11 +370,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             // Dibuja el caballo
             g.drawImage(caballo.getImagen(), caballo.getPosX(), caballo.getPosY(), this);
             //Dibuja los objetos malos
-            for (int i = 0; i < lista.size(); i++) {
-                //Dibuja los puntos
-                g.drawString("Puntos: " + Integer.toString(((Malo)lista.get(i)).getConteo()), 1100, 50); 
-                g.drawImage(((Malo)lista.get(i)).getImagen(), ((Malo)lista.get(i)).getPosX(), ((Malo)lista.get(i)).getPosY(), this);
-            }
+            g.drawImage(ave.getImagen(), ave.getPosX(), ave.getPosY(), this);
             //Verifica que haya desaparecido un objeto malo y dibuja el mensaje desaparece
             if (desaparece) {
                 g.drawString(caballo.getDesaparece(), caballo.getPosX(), caballo.getPosY());
