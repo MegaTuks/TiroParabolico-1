@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
+import java.net.URL;
 
 public class TiroParabolico extends JFrame implements Runnable, KeyListener, MouseListener {
     private Graphics dbg;  //gráfico
@@ -39,6 +40,8 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private SoundClip bala; //sonido bala
     private SoundClip explosion; //sonido explosion
     private long tiempoChoque; // tiempo del choque con objeto bueno
+    private Image img;
+   
     
     
     /**
@@ -63,24 +66,28 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //cerrar aplicación al cerrar ventana
         
         //URL's de las imágenes de ambas animaciones y los sonidos
-        Image caballo1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/caballo1.png"));
-	Image caballo2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/caballo2.png"));
-	Image caballo3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/caballo3.png"));
-	Image caballo4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/caballo4.png"));
-	Image caballo5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/caballo5.png"));
-	Image caballo6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/caballo6.png"));
-	Image caballo7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/caballo7.png"));
-	Image caballo8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/caballo8.png"));
-	Image ave1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ave1.png"));
-	Image ave2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ave2.png"));
-	Image ave3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ave3.png"));
-        Image ave4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ave4.png"));
-        Image ave5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ave5.png"));
-        Image ave6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ave6.png"));
+        Image caballo1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/1.png"));
+	Image caballo2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/2.png"));
+	Image caballo3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/3.png"));
+	Image caballo4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/4.png"));
+	Image caballo5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/5.png"));
+	Image caballo6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/6.png"));
+	Image caballo7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/7.png"));
+	Image caballo8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/8.png"));
+	Image ave1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s1.png"));
+	Image ave2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s2.png"));
+	Image ave3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s3.png"));
+        Image ave4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s4.png"));
+        Image ave5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s5.png"));
+        Image ave6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s6.png"));
+        
+        
+        URL oURL = this.getClass().getResource("images/spaces.png");
+       // gameover = Toolkit.getDefaultToolkit().getImage(goURL);
+        img = Toolkit.getDefaultToolkit().getImage(oURL);
         
         bala = new SoundClip("sounds/bala.wav"); //sonido de bala
         explosion = new SoundClip("sounds/explosion.wav");  //sonido de explosion
-        
         //Se crea un nuevo objeto bueno y se añaden los cuadros de animación
         caballo = new Bueno(getWidth() / 2, getHeight() / 2, caballo1);
         caballo.sumaCuadro(caballo1, 75);
@@ -349,6 +356,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         }
 
 	// Actualiza la imagen de fondo.
+        
 	dbg.setColor(getBackground ());
 	dbg.fillRect(0, 0, this.getSize().width, this.getSize().height);
 
@@ -367,6 +375,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     public void paint1(Graphics g) {
         //Verifica que los objetos existan
         if (caballo != null && ave != null) {
+             g.setColor(Color.red);
+            
+            g.drawImage(img, 0, 0, this); //imagen de fondo.
             // Dibuja el caballo
             g.drawImage(caballo.getImagen(), caballo.getPosX(), caballo.getPosY(), this);
             //Dibuja los objetos malos
