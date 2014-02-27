@@ -29,21 +29,21 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private long tiempoActual;  //tiempo actual
     private boolean pausa;  //pausa del juego
     private int direccion;  //dirección del objeto bueno
-    private int numMalos; //guarda el númeor de objetos malos
     private boolean click; //guarda si se está haciendo click
     private int clickX; //guarda la posición en X del click
     private int clickY; //guarda la posición en Y del click
-    private boolean desaparece; //choque del bueno con malo
     private SoundClip explosion; //sonido explosion
     private SoundClip moneda; //sonido explosion
     private SoundClip fondoM;
-    private long tiempoChoque; // tiempo del choque con objeto bueno
     private Image fondo;
     private Image tierra;
     private boolean info;
     private Image pausaImagen;
     private Image infoImagen;
     private Bueno ovni;
+    private Image creditos;
+    private int vidas;
+    private int puntos;
     
     /**
      * Constructor de la clase <I>JFrameExamen</I>
@@ -60,6 +60,8 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         direccion = 0; //inicia estático
         click = false; //inicia sin click
         pausa = false;  //se inicia sin pausa
+        vidas = 5;
+        puntos = 0;
         setSize(1024, 640);  //se redimenciona el applet
         setBackground(Color.white);  //fondo blanco del applet
         addKeyListener(this);  //se añade el keyListener al applet
@@ -70,6 +72,8 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         fondo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/fondo.jpg"));
         tierra = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/tierra.png"));
         pausaImagen = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/pausa.png"));
+        infoImagen = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/infor.png"));
+        creditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/creditos.png"));
         Image nave0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave0.png"));
 	Image nave1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave1.png"));
 	Image nave2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave2.png"));
@@ -236,7 +240,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     public void run () {
         tiempoActual = System.currentTimeMillis();
         
-        while (true) {  // Se ejecutará siempre
+        while (vidas > 0) {  // Se ejecutará siempre
             //Verifica si el juego está en pausa, de ser así, no actualizará
             //de lo contrario, actualizará
             if (!pausa) {
@@ -303,8 +307,6 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         
         //Verifica que cada objeto malo no choque con el caballo
         if (nave.intersecta(esfera)) {
-            tiempoChoque = System.currentTimeMillis(); //guarda el tiempo en que ocurrió el choque
-            desaparece = true;  //se activa el mensaje desaparece
             moneda.play();  //reproducre sonido de bala
             esfera.setConteo(esfera.getConteo() + 1);
             esfera.setPosX((int)(Math.random() * (getWidth() - esfera.getAncho())));
@@ -316,6 +318,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             explosion.play();
             esfera.setPosX((int)(Math.random() * (getWidth() - 50)));
             esfera.setPosY(-50);
+            vidas--;
         }
     }
     
@@ -336,6 +339,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             //Se cambia el estado de la variable pausa dependiendo de su
             //valor actual y desaparece el letrero de desaparece
             info = !info;
+            pausa = !pausa;
         }
         
         
@@ -453,24 +457,29 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      * @param g
     */
     public void paint1(Graphics g) {
+        
         //Verifica que los objetos existan
-        if (nave != null && esfera != null && ovni != null) {
-            g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
-            g.drawImage(tierra, getWidth() / 2, getHeight() - 100, 512, 512, this);
-            g.drawImage(ovni.getImagen(), ovni.getPosX(), ovni.getPosY(), this);
-            // Dibuja el caballo
-            g.drawImage(nave.getImagen(), nave.getPosX(), nave.getPosY(), this);
-            //Dibuja los objetos malos
-            g.drawImage(esfera.getImagen(), esfera.getPosX(), esfera.getPosY(), this);
-            //Verifica que haya desaparecido un objeto malo y dibuja el mensaje desaparece
-            if (desaparece) {
-                g.drawString(nave.getDesaparece(), nave.getPosX(), nave.getPosY());
+        if (nave != null && esfera != null && ovni != null) { 
+            
+            if (info) {
+                g.drawImage(infoImagen, 0, 0, getWidth(), getHeight(), this);
             }
-            //Verifica que no esté en pausa
-            if (pausa) {
-                //Dibuja el mensaje de pausado
-                g.drawImage(pausaImagen, getWidth() / 2 - 202, getHeight() / 2 - 197, 405, 392, this);
-            } 
+            
+            else {
+                g.drawString("Vidas: " + vidas + " Puntos: " + puntos, getWidth() - 500, 100);
+                g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
+                g.drawImage(tierra, getWidth() / 2, getHeight() - 100, 512, 512, this);
+                g.drawImage(ovni.getImagen(), ovni.getPosX(), ovni.getPosY(), this);
+                // Dibuja el caballo
+                g.drawImage(nave.getImagen(), nave.getPosX(), nave.getPosY(), this);
+                //Dibuja los objetos malos
+                g.drawImage(esfera.getImagen(), esfera.getPosX(), esfera.getPosY(), this);
+                //Verifica que haya desaparecido un objeto malo y dibuja el mensaje desaparece
+                if (pausa) {
+                     //Dibuja el mensaje de pausado
+                    g.drawImage(pausaImagen, getWidth() / 2 - 202, getHeight() / 2 - 197, 405, 392, this);
+                }  
+            }
         }
         
         else {
