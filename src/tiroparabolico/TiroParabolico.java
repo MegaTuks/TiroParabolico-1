@@ -166,6 +166,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         caballo.sumaCuadro(caballo31, 75); 
         
         ave = new Malo(0, 0, ave1, 3);
+        
         ave.sumaCuadro(ave1, 100);
         ave.sumaCuadro(ave1, 100);
         ave.sumaCuadro(ave2, 100);
