@@ -252,12 +252,12 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
          //Actualiza la posición de cada malo con base en su velocidad
          //esfera.setPosY(esfera.getPosY() + esfera.getVelocidad());
 
-         if (direccion == 0) {
-             nave.setPosX(nave.getPosX() - 2);
+         if (direccion == 1) {
+             nave.setPosX(nave.getPosX() - 3);
          }
          
-         else if (direccion == 1) {
-             nave.setPosX(nave.getPosX() + 2);
+         else if (direccion == 2) {
+             nave.setPosX(nave.getPosX() + 3);
          }
     }
     
@@ -309,11 +309,11 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         
         //Se cambia la dirección del bueno con base en la tecla oprimida
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            direccion = 0;
+            direccion = 1;
         }
         
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            direccion = 1;
+            direccion = 2;
         }
     }
     
@@ -323,7 +323,13 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      */
     @Override
     public void keyReleased(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            direccion = 0;
+        }
+        
+        else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            direccion = 0;
+        }
     }
     
     /**
