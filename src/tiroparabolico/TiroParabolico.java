@@ -40,6 +40,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private Image fondo;
     private Image ovni;
     private Image tierra;
+    private boolean info;
+    private Image pausaImagen;
+    private Image infoImagen;
     
     /**
      * Constructor de la clase <I>JFrameExamen</I>
@@ -66,6 +69,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         fondo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/fondo.jpg"));
         ovni = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ovni.gif"));
         tierra = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/tierra.png"));
+        pausaImagen = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/pausa.png"));
         Image nave0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave0.png"));
 	Image nave1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave1.png"));
 	Image nave2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave2.png"));
@@ -307,6 +311,14 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             pausa = !pausa;
         }
         
+        if (e.getKeyCode() == KeyEvent.VK_I) {
+            //Se cambia el estado de la variable pausa dependiendo de su
+            //valor actual y desaparece el letrero de desaparece
+            info = !info;
+        }
+        
+        
+        
         //Se cambia la dirección del bueno con base en la tecla oprimida
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             direccion = 1;
@@ -348,7 +360,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     @Override
     public void mouseClicked(MouseEvent e) {
         //verifica que el click haya sido dentro del objeto caballo
-        if (nave.clickDentro(e.getX(), e.getY())) {
+        if (esfera.clickDentro(e.getX(), e.getY())) {
             //cambia el estado de la variable click
             click = !click;
         }
@@ -436,7 +448,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             //Verifica que no esté en pausa
             if (pausa) {
                 //Dibuja el mensaje de pausado
-                g.drawString(nave.getPausado(), nave.getPosX(), nave.getPosY());
+                g.drawImage(pausaImagen, getWidth() / 2, getHeight() / 2, 100, 100, this);
             } 
         }
         
