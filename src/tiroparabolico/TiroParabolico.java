@@ -1,4 +1,15 @@
+//<<<<<<< HEAD
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author ecristerna
+ */
 
 package tiroparabolico;
 
@@ -11,8 +22,22 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException; 
+import java.util.Vector;
+
+
 
 public class TiroParabolico extends JFrame implements Runnable, KeyListener, MouseListener {
+   private String Filename;
+    private String[] arr;
+    private int scores;
+    private int vidas;
     private Graphics dbg;  //gráfico
     private Image dbImage;  // imagen a proyectar
     private Bueno nave;  //objeto de la clase bueno
@@ -44,6 +69,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      * Método de inicialización de las variables y objetos del <code>Applet</code>
      */
     public void init() {
+        Filename ="puntuaje.txt";
+        scores=0;
+        vidas=10;
         direccion = 0; //inicia estático
         click = false; //inicia sin click
         pausa = false;  //se inicia sin pausa
@@ -118,7 +146,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         bala = new SoundClip("sounds/bala.wav"); //sonido de bala
         explosion = new SoundClip("sounds/explosion.wav");  //sonido de explosion
         
-        //Se crea un nuevo objeto bueno y se añaden los cuadros de animación
+        //Se crea un nuevo objeto bueno y se añaden los cuadros de animación la nave
         nave = new Bueno(getWidth() / 2, getHeight() - 50, nave0);
         nave.sumaCuadro(nave1, 75);
         nave.sumaCuadro(nave2, 75);
@@ -152,6 +180,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         nave.sumaCuadro(nave30, 75);
         nave.sumaCuadro(nave31, 75);
         
+        //objeto que tendra movimiento parabolico
         esfera = new Malo(50, getHeight() - 100, s0, 3);
         esfera.sumaCuadro(s1, 100);
         esfera.sumaCuadro(s2, 100);
@@ -243,14 +272,56 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
          //Actualiza la posición de cada malo con base en su velocidad
          //esfera.setPosY(esfera.getPosY() + esfera.getVelocidad());
 
-         if (direccion == 0) {
-             nave.setPosX(nave.getPosX() - 2);
+         if (direccion == 1) {
+             nave.setPosX(nave.getPosX() - 3);
          }
          
-         else if (direccion == 1) {
-             nave.setPosX(nave.getPosX() + 2);
+         else if (direccion == 2) {
+             nave.setPosX(nave.getPosX() + 3);
          }
+         
     }
+    
+        public void leeArchivo() throws IOException {
+                                                          
+                BufferedReader fileIn;
+                try {
+                        fileIn = new BufferedReader(new FileReader(Filename));
+                } catch (FileNotFoundException e){
+                        File puntos = new File(Filename);
+                        PrintWriter fileOut = new PrintWriter(puntos);
+                        fileOut.println("512,0,512,100,0");
+                        fileOut.close();
+                        fileIn = new BufferedReader(new FileReader(Filename));
+                }
+                String dato = fileIn.readLine();
+                while(dato != null) {  
+                                                        
+                      arr = dato.split(",");
+                      scores = (Integer.parseInt(arr[4]));
+                      nave.setPosX(Integer.parseInt(arr[0]));
+                      nave.setPosY(Integer.parseInt(arr[1]));
+                      esfera.setPosX(Integer.parseInt(arr[2]));
+                      esfera.setPosX(Integer.parseInt(arr[3]));
+                      vidas= (Integer.parseInt(arr[5]));
+                      
+                      dato = fileIn.readLine();
+                }
+                fileIn.close();
+        }
+    
+        public void grabaArchivo() throws IOException {
+                                              
+                PrintWriter fileOut = new PrintWriter(new FileWriter(Filename));
+                
+
+                    SaveFile x=new SaveFile(nave.getPosX(),nave.getPosY(),esfera.getPosX(),esfera.getPosY(),scores,vidas);
+                    fileOut.println(x.toString());
+                
+                fileOut.close();
+        }
+        
+    
     
     /**
      * Metodo usado para checar las colisiones del objeto tierra y asteroide
@@ -300,11 +371,11 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         
         //Se cambia la dirección del bueno con base en la tecla oprimida
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            direccion = 0;
+            direccion = 1;
         }
         
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            direccion = 1;
+            direccion = 2;
         }
     }
     
@@ -312,10 +383,15 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      * Método <I>keyReleased<I/> de la clase <code>KeyListener</code>
      * @param e es el <code>evento</code> del teclado
      */
-    //@Override
+    @Override
     public void keyReleased(KeyEvent e) {
-
-    
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            direccion = 0;
+        }
+        
+        else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            direccion = 0;
+        }
     }
     
     /**
