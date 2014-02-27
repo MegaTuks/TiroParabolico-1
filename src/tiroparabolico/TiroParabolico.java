@@ -457,7 +457,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      * @param g
     */
     public void paint1(Graphics g) {
-        
+        g.setColor(Color.white);
         //Verifica que los objetos existan
         if (nave != null && esfera != null && ovni != null) { 
             
