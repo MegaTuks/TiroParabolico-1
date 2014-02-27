@@ -34,15 +34,16 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private int clickX; //guarda la posición en X del click
     private int clickY; //guarda la posición en Y del click
     private boolean desaparece; //choque del bueno con malo
-    private SoundClip bala; //sonido bala
     private SoundClip explosion; //sonido explosion
+    private SoundClip moneda; //sonido explosion
+    private SoundClip fondoM;
     private long tiempoChoque; // tiempo del choque con objeto bueno
     private Image fondo;
-    private Image ovni;
     private Image tierra;
     private boolean info;
     private Image pausaImagen;
     private Image infoImagen;
+    private Bueno ovni;
     
     /**
      * Constructor de la clase <I>JFrameExamen</I>
@@ -67,7 +68,6 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         
         //URL's de las imágenes de ambas animaciones y los sonidos
         fondo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/fondo.jpg"));
-        ovni = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ovni.gif"));
         tierra = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/tierra.png"));
         pausaImagen = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/pausa.png"));
         Image nave0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave0.png"));
@@ -127,12 +127,20 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         Image s22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s22.png"));
         Image s23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s23.png"));
         Image s24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s24.png"));
+        Image o0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/o0.gif"));
+        Image o1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/o1.gif"));
+        Image o2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/o2.gif"));
+        Image o3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/o3.gif"));
+        Image o4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/o4.gif"));
+        Image o5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/o5.gif"));
         
-        bala = new SoundClip("sounds/bala.wav"); //sonido de bala
-        explosion = new SoundClip("sounds/explosion.wav");  //sonido de explosion
+        explosion = new SoundClip("sounds/explosion.wav"); //sonido de explosion
+        moneda = new SoundClip("sounds/moneda.wav");  //sonido de explosion
+        fondoM = new SoundClip("sounds/musicaFondo.wav");  //sonido de explosion
         
         //Se crea un nuevo objeto bueno y se añaden los cuadros de animación
         nave = new Bueno(getWidth() / 2, getHeight() - 50, nave0);
+        nave.sumaCuadro(nave0, 75);
         nave.sumaCuadro(nave1, 75);
         nave.sumaCuadro(nave2, 75);
         nave.sumaCuadro(nave3, 75);
@@ -166,6 +174,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         nave.sumaCuadro(nave31, 75);
         
         esfera = new Malo(50, getHeight() - 100, s0, 3);
+        esfera.sumaCuadro(s0, 100);
         esfera.sumaCuadro(s1, 100);
         esfera.sumaCuadro(s2, 100);
         esfera.sumaCuadro(s3, 100);
@@ -190,6 +199,14 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         esfera.sumaCuadro(s22, 100);
         esfera.sumaCuadro(s23, 100);
         esfera.sumaCuadro(s24, 100);
+        
+        ovni = new Bueno(0, getHeight() - 100, o0);
+        ovni.sumaCuadro(o0, 150);
+        ovni.sumaCuadro(o1, 150);
+        ovni.sumaCuadro(o2, 150);
+        ovni.sumaCuadro(o3, 150);
+        ovni.sumaCuadro(o4, 150);
+        ovni.sumaCuadro(o5, 150);
     }
 
     /** 
@@ -201,6 +218,8 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     * 
     */
     public void start() {
+        fondoM.setLooping(true);
+        fondoM.play();
         //Crea el thread
         Thread hilo = new Thread(this);
 	//Inicializa el thread
@@ -253,6 +272,8 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
          //Actualiza la animación con base en el tiempo transcurrido para cada malo
          esfera.actualiza(tiempoTranscurrido);
          
+         ovni.actualiza(tiempoTranscurrido);
+         
          //Actualiza la posición de cada malo con base en su velocidad
          //esfera.setPosY(esfera.getPosY() + esfera.getVelocidad());
 
@@ -284,7 +305,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         if (nave.intersecta(esfera)) {
             tiempoChoque = System.currentTimeMillis(); //guarda el tiempo en que ocurrió el choque
             desaparece = true;  //se activa el mensaje desaparece
-            bala.play();  //reproducre sonido de bala
+            moneda.play();  //reproducre sonido de bala
             esfera.setConteo(esfera.getConteo() + 1);
             esfera.setPosX((int)(Math.random() * (getWidth() - esfera.getAncho())));
             esfera.setPosY(-50);
@@ -433,10 +454,10 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     */
     public void paint1(Graphics g) {
         //Verifica que los objetos existan
-        if (nave != null && esfera != null) {
+        if (nave != null && esfera != null && ovni != null) {
             g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
-            g.drawImage(ovni, 0, getHeight() - 100, this);
             g.drawImage(tierra, getWidth() / 2, getHeight() - 100, 512, 512, this);
+            g.drawImage(ovni.getImagen(), ovni.getPosX(), ovni.getPosY(), this);
             // Dibuja el caballo
             g.drawImage(nave.getImagen(), nave.getPosX(), nave.getPosY(), this);
             //Dibuja los objetos malos
@@ -448,7 +469,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             //Verifica que no esté en pausa
             if (pausa) {
                 //Dibuja el mensaje de pausado
-                g.drawImage(pausaImagen, getWidth() / 2, getHeight() / 2, 100, 100, this);
+                g.drawImage(pausaImagen, getWidth() / 2 - 202, getHeight() / 2 - 197, 405, 392, this);
             } 
         }
         
