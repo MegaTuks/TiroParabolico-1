@@ -74,15 +74,57 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
 	Image caballo6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/6.png"));
 	Image caballo7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/7.png"));
 	Image caballo8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/8.png"));
-	Image ave1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s1.png"));
+         Image caballo9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/9.png"));
+	Image caballo10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/10.png"));
+	Image caballo11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/11.png"));
+	Image caballo12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/12.png"));
+	Image caballo13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/13.png"));
+	Image caballo14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/14.png"));
+	Image caballo15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/15.png"));
+	Image caballo16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/16.png"));
+	 Image caballo17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/17.png"));
+	Image caballo18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/18.png"));
+	Image caballo19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/19.png"));
+	Image caballo20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/20.png"));
+	Image caballo21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/21.png"));
+	Image caballo22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/22.png"));
+	Image caballo23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/23.png"));
+	Image caballo24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/24.png"));
+         Image caballo25 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/25.png"));
+	Image caballo26 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/26.png"));
+	Image caballo27 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/27.png"));
+	Image caballo28 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/28.png"));
+	Image caballo29 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/29.png"));
+	Image caballo30 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/30.png"));
+	Image caballo31 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/31.png"));
+	Image caballo0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/0.png"));
+        
+        Image ave1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s1.png"));
 	Image ave2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s2.png"));
 	Image ave3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s3.png"));
         Image ave4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s4.png"));
         Image ave5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s5.png"));
         Image ave6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s6.png"));
-        
-        
+        Image ave7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s7.png"));
+        Image ave8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s8.png"));
+        Image ave9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s9.png"));
+        Image ave10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s10.png"));
+        Image ave11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s11.png"));
+        Image ave12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s12.png"));
+        Image ave13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s13.png"));
+        Image ave14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s14.png"));
+        Image ave15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s15.png"));
+        Image ave16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s16.png"));
+        Image ave17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s17.png"));
+        Image ave18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s18.png"));
+        Image ave19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s19.png"));
+        Image ave20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s20.png"));
+        Image ave21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s21.png"));
+        Image ave22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s22.png"));
+        Image ave23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s23.png"));
+        Image ave24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s24.png"));
         URL oURL = this.getClass().getResource("images/spaces.png");
+        
        // gameover = Toolkit.getDefaultToolkit().getImage(goURL);
         img = Toolkit.getDefaultToolkit().getImage(oURL);
         
@@ -90,6 +132,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         explosion = new SoundClip("sounds/explosion.wav");  //sonido de explosion
         //Se crea un nuevo objeto bueno y se añaden los cuadros de animación
         caballo = new Bueno(getWidth() / 2, getHeight() / 2, caballo1);
+        caballo.sumaCuadro(caballo0, 75);
         caballo.sumaCuadro(caballo1, 75);
         caballo.sumaCuadro(caballo2, 75);
         caballo.sumaCuadro(caballo3, 75);
@@ -98,6 +141,29 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         caballo.sumaCuadro(caballo6, 75);
         caballo.sumaCuadro(caballo7, 75);
         caballo.sumaCuadro(caballo8, 75);
+        caballo.sumaCuadro(caballo9, 75);
+        caballo.sumaCuadro(caballo10, 75);
+        caballo.sumaCuadro(caballo11, 75);
+        caballo.sumaCuadro(caballo12, 75);
+        caballo.sumaCuadro(caballo13, 75);
+        caballo.sumaCuadro(caballo14, 75);
+        caballo.sumaCuadro(caballo15, 75);
+        caballo.sumaCuadro(caballo16, 75);
+        caballo.sumaCuadro(caballo17, 75);
+        caballo.sumaCuadro(caballo18, 75);
+        caballo.sumaCuadro(caballo19, 75);
+        caballo.sumaCuadro(caballo20, 75);
+        caballo.sumaCuadro(caballo21, 75);
+        caballo.sumaCuadro(caballo22, 75);
+        caballo.sumaCuadro(caballo23, 75);
+        caballo.sumaCuadro(caballo24, 75);
+        caballo.sumaCuadro(caballo25, 75);
+        caballo.sumaCuadro(caballo26, 75);
+        caballo.sumaCuadro(caballo27, 75);
+        caballo.sumaCuadro(caballo28, 75);
+        caballo.sumaCuadro(caballo29, 75);
+        caballo.sumaCuadro(caballo30, 75);
+        caballo.sumaCuadro(caballo31, 75); 
         
         ave = new Malo(0, 0, ave1, 3);
         ave.sumaCuadro(ave1, 100);
@@ -106,6 +172,24 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         ave.sumaCuadro(ave4, 100);
         ave.sumaCuadro(ave5, 100);
         ave.sumaCuadro(ave6, 100);
+        ave.sumaCuadro(ave7, 100);
+        ave.sumaCuadro(ave8, 100);
+        ave.sumaCuadro(ave9, 100);
+        ave.sumaCuadro(ave10, 100);
+        ave.sumaCuadro(ave11, 100);
+        ave.sumaCuadro(ave12, 100);
+        ave.sumaCuadro(ave13, 100);
+        ave.sumaCuadro(ave14, 100);
+        ave.sumaCuadro(ave15, 100);
+        ave.sumaCuadro(ave16, 100);
+        ave.sumaCuadro(ave17, 100);
+        ave.sumaCuadro(ave18, 100);
+        ave.sumaCuadro(ave19, 100);
+        ave.sumaCuadro(ave20, 100);
+        ave.sumaCuadro(ave21, 100);
+        ave.sumaCuadro(ave22, 100);
+        ave.sumaCuadro(ave23, 100);
+        ave.sumaCuadro(ave24, 100);
     }
 
     /** 
