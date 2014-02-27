@@ -1,13 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author ecristerna
- */
 
 package tiroparabolico;
 
@@ -17,18 +8,15 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.LinkedList;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
-import java.net.URL;
 
 public class TiroParabolico extends JFrame implements Runnable, KeyListener, MouseListener {
     private Graphics dbg;  //gráfico
     private Image dbImage;  // imagen a proyectar
-    private Bueno caballo;  //objeto de la clase bueno
-    private Malo ave;  // objeto de la calse malo
-    private LinkedList lista;  //lista encadenada
+    private Bueno nave;  //objeto de la clase bueno
+    private Malo esfera;  // objeto de la calse malo
     private long tiempoActual;  //tiempo actual
     private boolean pausa;  //pausa del juego
     private int direccion;  //dirección del objeto bueno
@@ -40,9 +28,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private SoundClip bala; //sonido bala
     private SoundClip explosion; //sonido explosion
     private long tiempoChoque; // tiempo del choque con objeto bueno
-    private Image img;
-   
-    
+    private Image fondo;
+    private Image ovni;
+    private Image tierra;
     
     /**
      * Constructor de la clase <I>JFrameExamen</I>
@@ -59,139 +47,136 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         direccion = 0; //inicia estático
         click = false; //inicia sin click
         pausa = false;  //se inicia sin pausa
-        setSize(1200, 675);  //se redimenciona el applet
+        setSize(1024, 640);  //se redimenciona el applet
         setBackground(Color.white);  //fondo blanco del applet
         addKeyListener(this);  //se añade el keyListener al applet
         addMouseListener(this);  //se añade el mouseListeenr al applet
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //cerrar aplicación al cerrar ventana
         
         //URL's de las imágenes de ambas animaciones y los sonidos
-        Image caballo1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/1.png"));
-	Image caballo2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/2.png"));
-	Image caballo3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/3.png"));
-	Image caballo4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/4.png"));
-	Image caballo5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/5.png"));
-	Image caballo6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/6.png"));
-	Image caballo7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/7.png"));
-	Image caballo8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/8.png"));
-         Image caballo9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/9.png"));
-	Image caballo10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/10.png"));
-	Image caballo11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/11.png"));
-	Image caballo12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/12.png"));
-	Image caballo13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/13.png"));
-	Image caballo14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/14.png"));
-	Image caballo15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/15.png"));
-	Image caballo16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/16.png"));
-	 Image caballo17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/17.png"));
-	Image caballo18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/18.png"));
-	Image caballo19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/19.png"));
-	Image caballo20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/20.png"));
-	Image caballo21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/21.png"));
-	Image caballo22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/22.png"));
-	Image caballo23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/23.png"));
-	Image caballo24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/24.png"));
-         Image caballo25 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/25.png"));
-	Image caballo26 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/26.png"));
-	Image caballo27 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/27.png"));
-	Image caballo28 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/28.png"));
-	Image caballo29 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/29.png"));
-	Image caballo30 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/30.png"));
-	Image caballo31 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/31.png"));
-	Image caballo0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/0.png"));
-        
-        Image ave1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s1.png"));
-	Image ave2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s2.png"));
-	Image ave3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s3.png"));
-        Image ave4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s4.png"));
-        Image ave5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s5.png"));
-        Image ave6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s6.png"));
-        Image ave7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s7.png"));
-        Image ave8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s8.png"));
-        Image ave9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s9.png"));
-        Image ave10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s10.png"));
-        Image ave11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s11.png"));
-        Image ave12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s12.png"));
-        Image ave13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s13.png"));
-        Image ave14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s14.png"));
-        Image ave15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s15.png"));
-        Image ave16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s16.png"));
-        Image ave17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s17.png"));
-        Image ave18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s18.png"));
-        Image ave19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s19.png"));
-        Image ave20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s20.png"));
-        Image ave21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s21.png"));
-        Image ave22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s22.png"));
-        Image ave23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s23.png"));
-        Image ave24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s24.png"));
-        URL oURL = this.getClass().getResource("images/spaces.png");
-        
-       // gameover = Toolkit.getDefaultToolkit().getImage(goURL);
-        img = Toolkit.getDefaultToolkit().getImage(oURL);
+        fondo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/fondo.jpg"));
+        ovni = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ovni.gif"));
+        tierra = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/tierra.png"));
+        Image nave0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave0.png"));
+	Image nave1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave1.png"));
+	Image nave2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave2.png"));
+	Image nave3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave3.png"));
+	Image nave4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave4.png"));
+	Image nave5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave5.png"));
+	Image nave6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave6.png"));
+	Image nave7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave7.png"));
+        Image nave8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave8.png"));
+        Image nave9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave9.png"));
+        Image nave10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave10.png"));
+        Image nave11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave11.png"));
+        Image nave12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave12.png"));
+        Image nave13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave13.png"));
+        Image nave14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave14.png"));
+        Image nave15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave15.png"));
+        Image nave16= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave16.png"));
+        Image nave17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave17.png"));
+        Image nave18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave18.png"));
+        Image nave19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave19.png"));
+        Image nave20= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave20.png"));
+        Image nave21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave21.png"));
+        Image nave22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave22.png"));
+        Image nave23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave23.png"));
+        Image nave24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave24.png"));
+        Image nave25= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave25.png"));
+        Image nave26 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave26.png"));
+        Image nave27 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave27.png"));
+        Image nave28 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave28.png"));
+        Image nave29 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave29.png"));
+        Image nave30= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave30.png"));
+        Image nave31 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nave31.png"));
+	Image s0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s0.png"));
+	Image s1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s1.png"));
+	Image s2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s2.png"));
+        Image s3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s3.png"));
+        Image s4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s4.png"));
+        Image s5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s5.png"));
+        Image s6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s6.png"));
+        Image s7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s7.png"));
+        Image s8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s8.png"));
+        Image s9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s9.png"));
+        Image s10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s10.png"));
+        Image s11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s11.png"));
+        Image s12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s12.png"));
+        Image s13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s13.png"));
+        Image s14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s14.png"));
+        Image s15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s15.png"));
+        Image s16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s16.png"));
+        Image s17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s17.png"));
+        Image s18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s18.png"));
+        Image s19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s19.png"));
+        Image s20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s20.png"));
+        Image s21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s21.png"));
+        Image s22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s22.png"));
+        Image s23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s23.png"));
+        Image s24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/s24.png"));
         
         bala = new SoundClip("sounds/bala.wav"); //sonido de bala
         explosion = new SoundClip("sounds/explosion.wav");  //sonido de explosion
+        
         //Se crea un nuevo objeto bueno y se añaden los cuadros de animación
-        caballo = new Bueno(getWidth() / 2, getHeight() / 2, caballo1);
-        caballo.sumaCuadro(caballo0, 75);
-        caballo.sumaCuadro(caballo1, 75);
-        caballo.sumaCuadro(caballo2, 75);
-        caballo.sumaCuadro(caballo3, 75);
-        caballo.sumaCuadro(caballo4, 75);
-        caballo.sumaCuadro(caballo5, 75);
-        caballo.sumaCuadro(caballo6, 75);
-        caballo.sumaCuadro(caballo7, 75);
-        caballo.sumaCuadro(caballo8, 75);
-        caballo.sumaCuadro(caballo9, 75);
-        caballo.sumaCuadro(caballo10, 75);
-        caballo.sumaCuadro(caballo11, 75);
-        caballo.sumaCuadro(caballo12, 75);
-        caballo.sumaCuadro(caballo13, 75);
-        caballo.sumaCuadro(caballo14, 75);
-        caballo.sumaCuadro(caballo15, 75);
-        caballo.sumaCuadro(caballo16, 75);
-        caballo.sumaCuadro(caballo17, 75);
-        caballo.sumaCuadro(caballo18, 75);
-        caballo.sumaCuadro(caballo19, 75);
-        caballo.sumaCuadro(caballo20, 75);
-        caballo.sumaCuadro(caballo21, 75);
-        caballo.sumaCuadro(caballo22, 75);
-        caballo.sumaCuadro(caballo23, 75);
-        caballo.sumaCuadro(caballo24, 75);
-        caballo.sumaCuadro(caballo25, 75);
-        caballo.sumaCuadro(caballo26, 75);
-        caballo.sumaCuadro(caballo27, 75);
-        caballo.sumaCuadro(caballo28, 75);
-        caballo.sumaCuadro(caballo29, 75);
-        caballo.sumaCuadro(caballo30, 75);
-        caballo.sumaCuadro(caballo31, 75); 
+        nave = new Bueno(getWidth() / 2, getHeight() - 50, nave0);
+        nave.sumaCuadro(nave1, 75);
+        nave.sumaCuadro(nave2, 75);
+        nave.sumaCuadro(nave3, 75);
+        nave.sumaCuadro(nave4, 75);
+        nave.sumaCuadro(nave5, 75);
+        nave.sumaCuadro(nave6, 75);
+        nave.sumaCuadro(nave7, 75);
+        nave.sumaCuadro(nave8, 75);
+        nave.sumaCuadro(nave9, 75);
+        nave.sumaCuadro(nave10, 75);
+        nave.sumaCuadro(nave11, 75);
+        nave.sumaCuadro(nave12, 75);
+        nave.sumaCuadro(nave13, 75);
+        nave.sumaCuadro(nave14, 75);
+        nave.sumaCuadro(nave15, 75);
+        nave.sumaCuadro(nave16, 75);
+        nave.sumaCuadro(nave17, 75);
+        nave.sumaCuadro(nave18, 75);
+        nave.sumaCuadro(nave19, 75);
+        nave.sumaCuadro(nave20, 75);
+        nave.sumaCuadro(nave21, 75);
+        nave.sumaCuadro(nave22, 75);
+        nave.sumaCuadro(nave23, 75);
+        nave.sumaCuadro(nave24, 75);
+        nave.sumaCuadro(nave25, 75);
+        nave.sumaCuadro(nave26, 75);
+        nave.sumaCuadro(nave27, 75);
+        nave.sumaCuadro(nave28, 75);
+        nave.sumaCuadro(nave29, 75);
+        nave.sumaCuadro(nave30, 75);
+        nave.sumaCuadro(nave31, 75);
         
-        ave = new Malo(0, 0, ave1, 3);
-        
-        
-        ave.sumaCuadro(ave1, 100);
-        ave.sumaCuadro(ave2, 100);
-        ave.sumaCuadro(ave3, 100);
-        ave.sumaCuadro(ave4, 100);
-        ave.sumaCuadro(ave5, 100);
-        ave.sumaCuadro(ave6, 100);
-        ave.sumaCuadro(ave7, 100);
-        ave.sumaCuadro(ave8, 100);
-        ave.sumaCuadro(ave9, 100);
-        ave.sumaCuadro(ave10, 100);
-        ave.sumaCuadro(ave11, 100);
-        ave.sumaCuadro(ave12, 100);
-        ave.sumaCuadro(ave13, 100);
-        ave.sumaCuadro(ave14, 100);
-        ave.sumaCuadro(ave15, 100);
-        ave.sumaCuadro(ave16, 100);
-        ave.sumaCuadro(ave17, 100);
-        ave.sumaCuadro(ave18, 100);
-        ave.sumaCuadro(ave19, 100);
-        ave.sumaCuadro(ave20, 100);
-        ave.sumaCuadro(ave21, 100);
-        ave.sumaCuadro(ave22, 100);
-        ave.sumaCuadro(ave23, 100);
-        ave.sumaCuadro(ave24, 100);
+        esfera = new Malo(50, getHeight() - 100, s0, 3);
+        esfera.sumaCuadro(s1, 100);
+        esfera.sumaCuadro(s2, 100);
+        esfera.sumaCuadro(s3, 100);
+        esfera.sumaCuadro(s4, 100);
+        esfera.sumaCuadro(s5, 100);
+        esfera.sumaCuadro(s6, 100);
+        esfera.sumaCuadro(s7, 100);
+        esfera.sumaCuadro(s8, 100);
+        esfera.sumaCuadro(s9, 100);
+        esfera.sumaCuadro(s10, 100);
+        esfera.sumaCuadro(s11, 100);
+        esfera.sumaCuadro(s12, 100);
+        esfera.sumaCuadro(s13, 100);
+        esfera.sumaCuadro(s14, 100);
+        esfera.sumaCuadro(s15, 100);
+        esfera.sumaCuadro(s16, 100);
+        esfera.sumaCuadro(s17, 100);
+        esfera.sumaCuadro(s18, 100);
+        esfera.sumaCuadro(s19, 100);
+        esfera.sumaCuadro(s20, 100);
+        esfera.sumaCuadro(s21, 100);
+        esfera.sumaCuadro(s22, 100);
+        esfera.sumaCuadro(s23, 100);
+        esfera.sumaCuadro(s24, 100);
     }
 
     /** 
@@ -245,40 +230,25 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     public void actualiza() {
          //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
          long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
+         
          //Guarda el tiempo actual
        	 tiempoActual += tiempoTranscurrido;
-         //Actualiza la animación con base en el tiempo transcurrido
-         caballo.actualiza(tiempoTranscurrido);
          
-         //verifica que hayan pasado 1.5 segundos desde el choque y desaparece el mensaje
-         if (System.currentTimeMillis() - tiempoChoque > 1500) {
-             desaparece = false;
-         }
+         //Actualiza la animación con base en el tiempo transcurrido
+         nave.actualiza(tiempoTranscurrido);
          
          //Actualiza la animación con base en el tiempo transcurrido para cada malo
-         ave.actualiza(tiempoTranscurrido);
+         esfera.actualiza(tiempoTranscurrido);
          
          //Actualiza la posición de cada malo con base en su velocidad
-         ave.setPosY(ave.getPosY() + ave.getVelocidad());
+         //esfera.setPosY(esfera.getPosY() + esfera.getVelocidad());
 
-         //verifica que no esté detenido por haber hecho click sobre el objeto
-         if (!click) {
-             //actualiza la posición dependiendo de la dirección
-             if (direccion == 1) {
-                 caballo.setPosY(caballo.getPosY() - 3);
+         if (direccion == 0) {
+             nave.setPosX(nave.getPosX() - 2);
          }
          
-             else if (direccion == 2) {
-                 caballo.setPosX(caballo.getPosX() + 3);
-         }
-             
-             else if (direccion == 3) {
-                 caballo.setPosY(caballo.getPosY() + 3);
-         }
-             
-             else if (direccion == 4) {
-                 caballo.setPosX(caballo.getPosX() - 3);
-             }
+         else if (direccion == 1) {
+             nave.setPosX(nave.getPosX() + 2);
          }
     }
     
@@ -288,40 +258,30 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      */
     public void checaColision() {
         //Verifica que el caballo no choque con el applet por la derecha
-        if (caballo.getPosX() + caballo.getAncho() > getWidth()) {
-            caballo.setPosX(getWidth() - caballo.getAncho());
+        if (nave.getPosX() + nave.getAncho() > getWidth()) {
+            nave.setPosX(getWidth() - nave.getAncho());
         }
         
         //Verifica que el caballo no choque con el applet por la izquierda
-        if (caballo.getPosX() < 0) {
-            caballo.setPosX(0);
-        }
-        
-        //Verifica que el caballo no choque con el applet por arriba
-        if (caballo.getPosY() <= 0 ) {
-            caballo.setPosY(0);
-        }
-        
-        //Verifica que el caballo no choque con el applet por abajo
-        if (caballo.getPosY() + caballo.getAlto() > getHeight()) {
-            caballo.setPosY(getHeight() - caballo.getAlto());
+        if (nave.getPosX() < getWidth() / 2) {
+            nave.setPosX(getWidth() / 2);
         }
         
         //Verifica que cada objeto malo no choque con el caballo
-        if (caballo.intersecta(ave)) {
+        if (nave.intersecta(esfera)) {
             tiempoChoque = System.currentTimeMillis(); //guarda el tiempo en que ocurrió el choque
             desaparece = true;  //se activa el mensaje desaparece
             bala.play();  //reproducre sonido de bala
-            ave.setConteo(ave.getConteo() + 1);
-            ave.setPosX((int)(Math.random() * (getWidth() - ave.getAncho())));
-            ave.setPosY(-50);
+            esfera.setConteo(esfera.getConteo() + 1);
+            esfera.setPosX((int)(Math.random() * (getWidth() - esfera.getAncho())));
+            esfera.setPosY(-50);
         }
         
         //Verifica que cada objeto malo choque con el applet
-        if (ave.getPosY() + ave.getAlto() > getHeight()) {
+        if (esfera.getPosY() + esfera.getAlto() > getHeight()) {
             explosion.play();
-            ave.setPosX((int)(Math.random() * (getWidth() - 50)));
-            ave.setPosY(-50);
+            esfera.setPosX((int)(Math.random() * (getWidth() - 50)));
+            esfera.setPosY(-50);
         }
     }
     
@@ -336,28 +296,15 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             //Se cambia el estado de la variable pausa dependiendo de su
             //valor actual y desaparece el letrero de desaparece
             pausa = !pausa;
-            desaparece = false;
         }
         
         //Se cambia la dirección del bueno con base en la tecla oprimida
-        if (e.getKeyCode() == KeyEvent.VK_W) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            direccion = 0;
+        }
+        
+        else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             direccion = 1;
-            click = false;
-        }
-        
-        else if (e.getKeyCode() == KeyEvent.VK_D) {
-            direccion = 2;
-            click = false;
-        }
-        
-        else if (e.getKeyCode() == KeyEvent.VK_S) {
-            direccion = 3;
-            click = false;
-        }
-        
-        else if (e.getKeyCode() == KeyEvent.VK_A) {
-            direccion = 4;
-            click = false;
         }
     }
     
@@ -365,9 +312,10 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      * Método <I>keyReleased<I/> de la clase <code>KeyListener</code>
      * @param e es el <code>evento</code> del teclado
      */
-    @Override
+    //@Override
     public void keyReleased(KeyEvent e) {
 
+    
     }
     
     /**
@@ -386,7 +334,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     @Override
     public void mouseClicked(MouseEvent e) {
         //verifica que el click haya sido dentro del objeto caballo
-        if (caballo.clickDentro(e.getX(), e.getY())) {
+        if (nave.clickDentro(e.getX(), e.getY())) {
             //cambia el estado de la variable click
             click = !click;
         }
@@ -442,14 +390,13 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         }
 
 	// Actualiza la imagen de fondo.
-        
 	dbg.setColor(getBackground ());
 	dbg.fillRect(0, 0, this.getSize().width, this.getSize().height);
 
 	// Actualiza el Foreground.
 	dbg.setColor(getForeground());
 	paint1(dbg);
-
+        
 	// Dibuja la imagen actualizada
 	g.drawImage(dbImage, 0, 0, this);
     }
@@ -460,22 +407,22 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     */
     public void paint1(Graphics g) {
         //Verifica que los objetos existan
-        if (caballo != null && ave != null) {
-             g.setColor(Color.red);
-            
-            g.drawImage(img, 0, 0, this); //imagen de fondo.
+        if (nave != null && esfera != null) {
+            g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
+            g.drawImage(ovni, 0, getHeight() - 100, this);
+            g.drawImage(tierra, getWidth() / 2, getHeight() - 100, 512, 512, this);
             // Dibuja el caballo
-            g.drawImage(caballo.getImagen(), caballo.getPosX(), caballo.getPosY(), this);
+            g.drawImage(nave.getImagen(), nave.getPosX(), nave.getPosY(), this);
             //Dibuja los objetos malos
-            g.drawImage(ave.getImagen(), ave.getPosX(), ave.getPosY(), this);
+            g.drawImage(esfera.getImagen(), esfera.getPosX(), esfera.getPosY(), this);
             //Verifica que haya desaparecido un objeto malo y dibuja el mensaje desaparece
             if (desaparece) {
-                g.drawString(caballo.getDesaparece(), caballo.getPosX(), caballo.getPosY());
+                g.drawString(nave.getDesaparece(), nave.getPosX(), nave.getPosY());
             }
             //Verifica que no esté en pausa
             if (pausa) {
                 //Dibuja el mensaje de pausado
-                g.drawString(caballo.getPausado(), caballo.getPosX(), caballo.getPosY());
+                g.drawString(nave.getPausado(), nave.getPosX(), nave.getPosY());
             } 
         }
         
@@ -485,3 +432,4 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         }
     }
 }
+
