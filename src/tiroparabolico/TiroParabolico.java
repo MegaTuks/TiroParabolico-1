@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException; 
+import java.lang.Math;
 
 public class TiroParabolico extends JFrame implements Runnable, KeyListener, MouseListener {
     private Graphics dbg;  //gráfico
@@ -54,6 +55,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private int scores;
     private int vidas;
     private boolean sonido;
+    private int gravedad;
     
     /**
      * Constructor de la clase <I>JFrameExamen</I>
@@ -74,6 +76,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         scores = 0;
         filename = "/Users/ecristerna/Documents/4S/Proyecto de Desarrollo de Videojuegos/Programas/TiroParabolico/src/tiroparabolico/archivos/puntajes.txt";
         sonido = true;
+        gravedad = 10;
         setSize(1024, 640);  //se redimenciona el applet
         setBackground(Color.white);  //fondo blanco del applet
         addKeyListener(this);  //se añade el keyListener al applet
@@ -250,12 +253,20 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     public void run () {
         tiempoActual = System.currentTimeMillis();
         
-        if (sonido) {
-           fondoM.setLooping(true);
-           fondoM.play(); 
-        }
-        
-        while (vidas > 0) {  // Se ejecutará siempre
+        while (vidas > 0) {
+            
+            if (sonido) {
+                if (!fondoM.getLooping()) {
+                    fondoM.setLooping(true);
+                    fondoM.play(); 
+                }
+            }
+            else {
+                fondoM.setLooping(false);
+                fondoM.stop();
+            }
+
+            // Se ejecutará siempre
             //Verifica si el juego está en pausa, de ser así, no actualizará
             //de lo contrario, actualizará
             if (!pausa) {
@@ -322,7 +333,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         
         //Verifica que cada objeto malo no choque con el caballo
         if (nave.intersecta(esfera)) {
-            moneda.play();  //reproducre sonido de bala
+            if (sonido) {
+                moneda.play();  //reproducre sonido de bala           
+            }
             esfera.setConteo(esfera.getConteo() + 1);
             esfera.setPosX((int)(Math.random() * (getWidth() - esfera.getAncho())));
             esfera.setPosY(-50);
@@ -330,7 +343,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         
         //Verifica que cada objeto malo choque con el applet
         if (esfera.getPosY() + esfera.getAlto() > getHeight()) {
-            explosion.play();
+            if (sonido) {
+                explosion.play();  //reproducre sonido de bala           
+            }
             esfera.setPosX((int)(Math.random() * (getWidth() - 50)));
             esfera.setPosY(-50);
             vidas--;
@@ -391,9 +406,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             pausa = !pausa;
         }
         
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            sonido = !sonido;
-        }
+
         
         if (e.getKeyCode() == KeyEvent.VK_G) {
             try {
@@ -410,8 +423,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 System.out.println("");
             }
         }
-        
-        
+
         //Se cambia la dirección del bueno con base en la tecla oprimida
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             direccion = 1;
@@ -434,6 +446,10 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             direccion = 0;
+        }
+        
+                if (e.getKeyCode() == KeyEvent.VK_S) {
+            sonido = !sonido;
         }
     }
     
@@ -534,7 +550,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             }
             
             else {
-                g.drawString("Vidas: " + vidas + " Puntos: " + scores, getWidth() - 500, 100);
+
                 g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
                 g.drawImage(tierra, getWidth() / 2, getHeight() - 100, 512, 512, this);
                 g.drawImage(ovni.getImagen(), ovni.getPosX(), ovni.getPosY(), this);
@@ -543,6 +559,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 //Dibuja los objetos malos
                 g.drawImage(esfera.getImagen(), esfera.getPosX(), esfera.getPosY(), this);
                 //Verifica que haya desaparecido un objeto malo y dibuja el mensaje desaparece
+                g.drawString("Vidas: " + vidas + "   Puntos: " + scores, getWidth() - 200, 50);
                 if (pausa) {
                      //Dibuja el mensaje de pausado
                     g.drawImage(pausaImagen, getWidth() / 2 - 202, getHeight() / 2 - 197, 405, 392, this);
