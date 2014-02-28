@@ -15,6 +15,6 @@ public class Main {
     public static void main(String[] args) {
         TiroParabolico juego = new TiroParabolico();
         juego.setVisible(true);
-        juego.setTitle("Tiro Parabolico");
+        juego.setTitle("Tiro Parabolico Espacial");
     }
 }
