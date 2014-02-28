@@ -56,13 +56,12 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private int vidas;
     private boolean sonido;
     private int gravedad; // valor de la gravedad.
-    private int velxo; //velocidad inicial x;
-    private int velyo; // velocidad inicial y
-    private int velx;
-    private int vely;
-    private int angulo;
     private boolean movido;
     private int choques;
+    private int r;
+    private int velocidad;
+    private int vX;
+    private int vY;
     
     /**
      * Constructor de la clase <I>JFrameExamen</I>
@@ -83,13 +82,12 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         scores = 0;
         filename = "/Users/ecristerna/Documents/4S/Proyecto de Desarrollo de Videojuegos/Programas/TiroParabolico/src/tiroparabolico/archivos/puntajes.txt";
         sonido = true;
-        gravedad = 10;
-        velxo= (int) (Math.random()*10);
-        velyo= (int) (Math.random()*25);
-        angulo = (int) (Math.random()*10);
+        gravedad = 1;
         movido = true;
         info = false;
         choques = 0;
+        vX = (int)(Math.random() * 12 + 15);
+        vY = (int)(Math.random() * 12 + 15);
         setSize(1024, 640);  //se redimenciona el applet
         setBackground(Color.white);  //fondo blanco del applet
         addKeyListener(this);  //se añade el keyListener al applet
@@ -205,7 +203,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         nave.sumaCuadro(nave30, 75);
         nave.sumaCuadro(nave31, 75);
         
-        esfera = new Malo(50, getHeight() - 100, s0, 15, 15);
+        esfera = new Malo(50, getHeight() - 100, s0, vX, vY);
         esfera.sumaCuadro(s0, 100);
         esfera.sumaCuadro(s1, 100);
         esfera.sumaCuadro(s2, 100);
@@ -335,7 +333,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
          if (click) {
              esfera.setPosX(esfera.getPosX() + esfera.getVelocidadX());
              esfera.setPosY(esfera.getPosY() - esfera.getVelocidadY());
-             esfera.setVelocidadY(esfera.getVelocidadY() - 1);
+             esfera.setVelocidadY(esfera.getVelocidadY() - gravedad);
          }
          
          if (direccion == 1) {
@@ -367,10 +365,12 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             if (sonido) {
                 moneda.play();  //reproducre sonido de bala           
             }
+            vX = (int)(Math.random() * 12 + 15);
+            vY = (int)(Math.random() * 12 + 15);
             esfera.setConteo(esfera.getConteo() + 1);
             esfera.setPosX(50);
             esfera.setPosY(getHeight() - 100);
-            esfera.setVelocidadY(15);
+            esfera.setVelocidadY(vY);
             scores += 2;
             click = false;
             movido = true;
@@ -381,12 +381,15 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             if (sonido) {
                 explosion.play();  //reproducre sonido de bala           
             }
+            vX = (int)(Math.random() * 12 + 15);
+            vY = (int)(Math.random() * 12 + 15);
             esfera.setPosX(50);
             esfera.setPosY(getHeight() - 100);
-            esfera.setVelocidadY(15);
+            esfera.setVelocidadY(vY);
             choques++;
             click = false;
             movido = true;
+
         }
         
         if (choques == 3) {
