@@ -15,7 +15,8 @@ import java.awt.Image;
 
 public class Malo extends Base {
     private static int conteo;  //variable de conteo
-    private int velocidad;  //variable de velocidad
+    private int velocidadX;  //variable de velocidad
+    private int velocidadY;
     
     /**
      * Método constructor de la clase <I>Malo</I>
@@ -25,9 +26,10 @@ public class Malo extends Base {
      * @param image es la imagen del tipo <code>Image</code> del objeto
      * @param vel es la velociad del tipo <code>int</code> del objeto
      */
-    public Malo(int posX, int posY, Image image, int vel) {
+    public Malo(int posX, int posY, Image image, int velX, int velY) {
         super(posX, posY, image);  //se utiliza el constructor de la clase padre
-        velocidad = vel;  //se define la velocidad del objeto
+        velocidadX = velX;  //se define la velocidad del objeto
+        velocidadY = velY;
     }
     
     /**
@@ -53,8 +55,8 @@ public class Malo extends Base {
      * 
      * @param vel es el valor de la velocidad del tipo <code>int</code>
      */
-    public void setVelocidad(int vel) {
-        velocidad = vel;  //define el valor de la velocidad
+    public void setVelocidadX(int vel) {
+        velocidadX = vel;  //define el valor de la velocidad
     }
     
     /**
@@ -62,7 +64,15 @@ public class Malo extends Base {
      * 
      * @return valor de la velocidad del objeto de tipo <code>int</code>
      */
-    public int getVelocidad() {
-        return velocidad;  //regresa el valor de la velocidad
+    public int getVelocidadX() {
+        return velocidadX;  //regresa el valor de la velocidad
+    }
+    
+    public void setVelocidadY(int vel) {
+        velocidadY = vel;  //define el valor de la velocidad
+    }
+    
+    public int getVelocidadY() {
+        return velocidadY;  //regresa el valor de la velocidad
     }
 }

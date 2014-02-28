@@ -126,6 +126,9 @@ public class SaveFile {
       return score;
   }
   
+  /**
+     * Metodo get de vidas.
+     */
    public int getVidas()
   {
       return vidas;
